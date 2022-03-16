@@ -27,7 +27,7 @@ function Decouverte() {
     // Pour Switcher du mode normal à sombre
     const { toggle } = useContext(ThemeContext);
 
-    useEffect(async () => {
+    useEffect(() => {
         // On actualise le localStorage avec le nouveau tableau contenu dans le state favoritesInLocal
         if(syncLocal) {
            syncLocalStorage();
