@@ -15,7 +15,7 @@ function Favoris() {
     // State pour iniliatiser les données du localStorage
     const [initialise, setInitialise] = useState(true);
     // State pour lancer un appel vers l'api
-    const [launchResearch, setLaunchResearch] = useState(true);
+    const [launchResearch, setLaunchResearch] = useState(false);
     // State pour mettre afficher une étoile remplie ou non
     const [isFavorite, setIsFavorite] = useState(false);
     // State pour ajouter ou supprimer un personnage des favoris
@@ -25,7 +25,9 @@ function Favoris() {
     // State pour mettre à jour le localStorage
     const [syncLocal, setSyncLocal] = useState(false);
     // State permettant combien de personnages ont déjà été chargées
-    const [indexChargement, setindexChargement] = useState(0)
+    const [indexChargement, setindexChargement] = useState(0);
+    // State No Favoris
+    const [noFavoris, setNoFavoris] = useState(false);
 
     // Pour Switcher du mode normal à sombre
     const { toggle } = useContext(ThemeContext);
@@ -44,8 +46,17 @@ function Favoris() {
             if(localItems != undefined) {
                 const itemsParsed = await JSON.parse(localItems)
                 await setFavoritesInLocal(itemsParsed);
+                setLaunchResearch(true);
             }
+            else {
+                console.log('here')
+                setLoading(false);
+                setNoFavoris(true);
+            }
+            // Une fois terminé, on passe initialise à false afin de ne pas relancer la fonction d'initialisation lors 
+            // d'une future réutilisation du useEffect 
             setInitialise(false)
+            // On lance alors la fonction de recherche random d'un personnage
         }
         
         // On Lance une recherche
