@@ -48,7 +48,7 @@ function Decouverte() {
         if(launchFavorite) {
             launchFavoritePerso();
         }
-    }, []);
+    });
     
     /* */
 
