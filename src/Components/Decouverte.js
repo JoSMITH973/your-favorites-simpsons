@@ -17,7 +17,7 @@ function Decouverte() {
     const [launchResearch, setLaunchResearch] = useState(false);
     // State pour mettre afficher une étoile remplie ou non
     const [isFavorite, setIsFavorite] = useState(false);
-    // State pour mettre un personnage en favori
+    // State pour ajouter ou supprimer un personnage des favoris
     const [launchFavorite, setLaunchFavorite] = useState(false);
     // State contenant le tableau des favoris
     const [favoritesInLocal, setFavoritesInLocal] = useState([]);
@@ -48,7 +48,7 @@ function Decouverte() {
         if(launchFavorite) {
             launchFavoritePerso();
         }
-    });
+    }, [launchResearch, launchFavorite, initialise, syncLocal]);
     
     /* */
 

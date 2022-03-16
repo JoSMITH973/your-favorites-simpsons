@@ -36,3 +36,14 @@
 .marginForNavbar {
     margin-left: 2%;
 }
+
+#alignSwitch {
+    display: flex;
+    vertical-align: middle;
+    // justify-content: center;
+    // margin: 0 2%;
+}
+
+#alignSwitch > * {
+    margin-left: 10px;
+}

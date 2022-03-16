@@ -25,7 +25,10 @@ function TopBar() {
                     <NavLink onClick={() => setExpanded(false)} className="nav-link" to="/">Découverte</NavLink>
                     <NavLink key="fav" onClick={() => setExpanded(false)} className="nav-link" to="/favoris">Favoris</NavLink>
                     {/* <Button onClick={toggleFunction}>Changer</Button> */}
-                    <Switch onChange={toggleFunction} checked={toggle} offColor="#ffffff" offHandleColor="#4B4F4F" onColor="#4B4F4F"  onHandleColor="#ffffff" checkedIcon="" uncheckedIcon=""/>
+                    <div id="alignSwitch" className="nav-link">
+                        Mode {toggle ? "Sombre" : "Clair" }
+                        <Switch onChange={toggleFunction} checked={toggle} offColor="#ffffff" offHandleColor="#4B4F4F" onColor="#4B4F4F"  onHandleColor="#ffffff" checkedIcon="" uncheckedIcon=""/>
+                    </div>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
