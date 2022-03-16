@@ -17,7 +17,7 @@ function Decouverte() {
     const [launchResearch, setLaunchResearch] = useState(false);
     // State pour mettre afficher une étoile remplie ou non
     const [isFavorite, setIsFavorite] = useState(false);
-    // State pour ajouter ou supprimer un personnage des favoris
+    // State pour mettre un personnage en favori
     const [launchFavorite, setLaunchFavorite] = useState(false);
     // State contenant le tableau des favoris
     const [favoritesInLocal, setFavoritesInLocal] = useState([]);
@@ -27,92 +27,69 @@ function Decouverte() {
     // Pour Switcher du mode normal à sombre
     const { toggle } = useContext(ThemeContext);
 
-    useEffect(() => {
+    useEffect(async () => {
         // On actualise le localStorage avec le nouveau tableau contenu dans le state favoritesInLocal
         if(syncLocal) {
-           syncLocalStorage();
+            await AsyncLocalStorage.setItem("character", JSON.stringify(favoritesInLocal))
+            setSyncLocal(false)
         }
 
         // On récupère les données du localStorage seulement lorsqu'on lance la page pour la première fois
         // De ce fait on évite les éventuels bugs empêchant le localStorage de s'actualiser
         if(initialise) {
-            initialiseData();
+            // On récupère les favoris dans le localStorage de manière asynchrone
+            const localItems = await AsyncLocalStorage.getItem('character');
+            // Si les données récupérées du localStorage ne sont pas vide, alors on les ajoutes dans le state favoritesInLocal
+            if(localItems != undefined) {
+                const itemsParsed = await JSON.parse(localItems);
+                await setFavoritesInLocal(itemsParsed);
+            }
+            // Une fois terminé, on passe initialise à false afin de ne pas relancer la fonction d'initialisation lors 
+            // d'une future réutilisation du useEffect 
+            setInitialise(false);
+            // On lance alors la fonction de recherche random d'un personnage
+            setLaunchResearch(true);
         }
 
         // On Lance une recherche
         if (launchResearch) {
-            launchResearchPerso();
+            setLoading(true)
+            fetch('https://thesimpsonsquoteapi.glitch.me/quotes')
+            .then( res => res.json() )
+            .then( data => {
+                // On insère les données reçus dans le state personnage
+                setPersonnage(data[0])
+                // On vérifie que le personnage reçu est dans le tableau
+                // Si oui le state isFavorite passe à true et une étoile remplie s'affiche sinon l'inverse
+                let checkInArray = favoritesInLocal.find(el => el == data[0].character) != undefined ? true : false;
+                setIsFavorite(checkInArray)
+                
+                // Une fois les données affectées et traiter, on peut désactiver l'écran de chargement
+                setLoading(false)
+            })
+            setLaunchResearch(false)
         }
 
         // On ajoute un personnage au favoris
         if(launchFavorite) {
-            launchFavoritePerso();
+            // On actualise 
+            // On insère ou on retire un personnage du tableau des favoris
+            if(isFavorite) {
+                // Si le personnage est en favoris, alors on le retire du tableau
+                setFavoritesInLocal(favoritesInLocal.filter(el => el !== personnage.character));
+            }
+            else {
+                // Si le personnage n'est pas en favoris, alors on le rajoute au tableau
+                setFavoritesInLocal([...favoritesInLocal, personnage.character]);
+            }
+            // On change l'état du state afin d'afficher l'icone adéquat à la demande
+            setIsFavorite(!isFavorite);
+            setLaunchFavorite(false);
+            // On relance le useEffect avec le tableau qui sera mis à jour et donc par le même biais synchronisera le local
+            setSyncLocal(true);
         }
-    }, [launchResearch, launchFavorite, initialise, syncLocal]);
+    }, [launchResearch, launchFavorite]);
     
-    /* */
-
-    // On actualise le localStorage avec le nouveau tableau contenu dans le state favoritesInLocal
-    const syncLocalStorage = async () => {
-        await AsyncLocalStorage.setItem("character", JSON.stringify(favoritesInLocal))
-        setSyncLocal(false)
-    }
-
-    // On récupère les données du localStorage seulement lorsqu'on lance la page pour la première fois
-    // De ce fait on évite les éventuels bugs empêchant le localStorage de s'actualiser
-    const initialiseData = async () => {
-        // On récupère les favoris dans le localStorage de manière asynchrone
-        const localItems = await AsyncLocalStorage.getItem('character');
-        // Si les données récupérées du localStorage ne sont pas vide, alors on les ajoutes dans le state favoritesInLocal
-        if(localItems != undefined) {
-            const itemsParsed = await JSON.parse(localItems);
-            await setFavoritesInLocal(itemsParsed);
-        }
-        // Une fois terminé, on passe initialise à false afin de ne pas relancer la fonction d'initialisation lors 
-        // d'une future réutilisation du useEffect 
-        setInitialise(false);
-        // On lance alors la fonction de recherche random d'un personnage
-        setLaunchResearch(true);
-    }
-
-    // On Lance une recherche
-    const launchResearchPerso = async () => {
-        setLoading(true)
-        fetch('https://thesimpsonsquoteapi.glitch.me/quotes')
-        .then( res => res.json() )
-        .then( data => {
-            // On insère les données reçus dans le state personnage
-            setPersonnage(data[0])
-            // On vérifie que le personnage reçu est dans le tableau
-            // Si oui le state isFavorite passe à true et une étoile remplie s'affiche sinon l'inverse
-            let checkInArray = favoritesInLocal.find(el => el == data[0].character) != undefined ? true : false;
-            setIsFavorite(checkInArray)
-            
-            // Une fois les données affectées et traiter, on peut désactiver l'écran de chargement
-            setLoading(false)
-        })
-        setLaunchResearch(false)
-    }
-
-    // On ajoute un personnage au favoris
-    const launchFavoritePerso = async () => {
-        // On actualise 
-        // On insère ou on retire un personnage du tableau des favoris
-        if(isFavorite) {
-            // Si le personnage est en favoris, alors on le retire du tableau
-            setFavoritesInLocal(favoritesInLocal.filter(el => el !== personnage.character));
-        }
-        else {
-            // Si le personnage n'est pas en favoris, alors on le rajoute au tableau
-            setFavoritesInLocal([...favoritesInLocal, personnage.character]);
-        }
-        // On change l'état du state afin d'afficher l'icone adéquat à la demande
-        setIsFavorite(!isFavorite);
-        setLaunchFavorite(false);
-        // On relance le useEffect avec le tableau qui sera mis à jour et donc par le même biais synchronisera le local
-        setSyncLocal(true);
-    }
-
     const getPerso = async () => {
         setLaunchResearch(true)
     }
