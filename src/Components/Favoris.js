@@ -88,7 +88,7 @@ function Favoris() {
             // On relance le useEffect avec le tableau qui sera mis à jour et donc par le même biais synchronisera le local
             setSyncLocal(true);
         }
-    }, [initialise, indexChargement, launchResearch, launchFavorite]);
+    }, [initialise, syncLocal, indexChargement, launchResearch, launchFavorite]);
 
     const getPersos = async () => {
     }
