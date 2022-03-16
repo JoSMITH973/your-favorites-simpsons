@@ -1,0 +1,38 @@
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) { 
+    .navbar {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) { 
+    .navbar {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+
+.navbar {
+    background-color: #16a085 !important;
+}
+
+.navbar-nav > .active > a {
+    color: aqua;
+    background-color: chartreuse;    
+}
+
+.nav-item > a:hover {
+    color: aqua;
+}
+
+.marginForNavbar {
+    margin-left: 2%;
+}

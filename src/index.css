@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.mainDiv, .mainDivDark {
+    margin: 2%;
+    text-align: center;
+}
+
+.mainDiv {
+    color: black;
+}
+
+.mainDivDark {
+    color: white;
+}
