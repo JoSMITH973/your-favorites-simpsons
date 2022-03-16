@@ -42,14 +42,12 @@ function Favoris() {
         // De ce fait on évite les éventuels bugs empêchant le localStorage de s'actualiser
         if(initialise) {
             const localItems = await AsyncLocalStorage.getItem('character');
-            console.log('localItems :',localItems);
             if(localItems != undefined) {
                 const itemsParsed = await JSON.parse(localItems)
                 await setFavoritesInLocal(itemsParsed);
                 setLaunchResearch(true);
             }
             else {
-                console.log('here')
                 setLoading(false);
                 setNoFavoris(true);
             }
@@ -66,7 +64,6 @@ function Favoris() {
 
             for(let i=0; i<favoritesInLocal.length; i++) {
 
-                console.log('character :', favoritesInLocal[i])
                 const response = await fetch(`https://thesimpsonsquoteapi.glitch.me/quotes?character=${favoritesInLocal[i]}`);
                 const result = await response.json();
                 // On insère les données reçus dans le state personnage
@@ -90,7 +87,6 @@ function Favoris() {
         if(launchFavorite) {
             // On actualise 
             // Si le personnage est en favoris, alors on le retire du tableau
-            console.log('here');
             await setFavoritesInLocal(favoritesInLocal.filter(el => el !== personnageToRemove));
             await setPersonnages(personnages.filter(el => el.character !== personnageToRemove));
             // On change l'état du state afin d'afficher l'icone adéquat à la demande
@@ -105,7 +101,6 @@ function Favoris() {
     }
 
     const setFavorites = async (character) => {
-        console.log('name :', character);
         setPersonnageToRemove(character)
         setLaunchFavorite(true)
     }
