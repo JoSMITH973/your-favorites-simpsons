@@ -40,3 +40,17 @@ Même depuis ton téléphone !
 ![alt text](https://github.com/JoSMITH973/your-favorites-simpsons/blob/main/images_readme/favoris2.png?raw=true)
 &nbsp; &nbsp; &nbsp; &nbsp;
 ![alt text](https://github.com/JoSMITH973/your-favorites-simpsons/blob/main/images_readme/favoris3.png?raw=true)
+
+
+# Packages utilisés :
+
+- react-bootstrap
+- react-bootstrap-icons
+- react-loader-spinner
+- react-router-dom
+- react-switch 
+- async-local-storage from createnextapp
+
+# Credits :
+
+SMITH Joan
