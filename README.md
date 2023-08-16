@@ -4,8 +4,6 @@ Envie d'y jeter un coup d'oeil ?
 
 N'hésitez pas ! Lien : https://favorite-simpson.netlify.app/
 
-L'API utilisé par l'application n'est plus disponible. Le site sera de nouveau fonctionnel lorsque je trouverais une nouvelle API.
-
 
 Vous pouvez Consulter les différents personnages de manière aléatoire 
 
